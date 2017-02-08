@@ -83,7 +83,6 @@ public class StopperAI implements TicTacToeStrategy {
 	    // call the minimax()
 	    this.minimax(0, this.maximizer);
 	    // return the point found by minimax()
-	    // return this.bestMove;
 	    return this.bestMove;
 	} else {
 	    throw new IGotNowhereToGoException("All positions on the board are occupied.");

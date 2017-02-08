@@ -125,12 +125,13 @@ public class testingAI implements TicTacToeStrategy {
 
 		if (currentScore >= 0) {
 		    // the move is a win, or at least a tie
-		    if (depth == 0)
+		    if (depth == 0) {
 			/*
 			 * we have walked back up from the tree and are now back
 			 * at the root of the move
 			 */
 			bestMove = point;
+		    }
 		}
 
 		if (currentScore == 1) {
@@ -159,8 +160,10 @@ public class testingAI implements TicTacToeStrategy {
 		// make a move with the point
 		this.theGame.minimaxChoose(point.x, point.y);
 		// get the minimax score
-		int currentScore = this.minimax(depth + 1, this.minimizer);
-
+		/*
+		 * I FORGOT TO CHANGE TO BEING THE MAXIMIZER!!!! >:(
+		 */
+		int currentScore = this.minimax(depth + 1, this.maximizer);
 		min = Math.min(currentScore, min);
 		if (min == -1) {
 		    /*
@@ -189,7 +192,6 @@ public class testingAI implements TicTacToeStrategy {
 	    // call the minimax()
 	    this.minimax(0, this.maximizer);
 	    // return the point found by minimax()
-	    // return this.bestMove;
 	    return this.bestMove;
 	} else {
 	    throw new IGotNowhereToGoException("All positions on the board are occupied.");

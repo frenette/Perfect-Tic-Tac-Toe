@@ -78,7 +78,7 @@ public class TestStrategies {
 	int stopperPlayerWins = 0;
 	int ties = 0;
 
-	for (int game = 1; game <= 5; game++) {
+	for (int game = 1; game <= 500; game++) {
 	    char winner = playOneGame(randomBot, stopperBotPlaysSecond);
 	    if (winner == 'X')
 		randomPlayerWins++;
@@ -88,10 +88,7 @@ public class TestStrategies {
 		ties++;
 	}
 
-	/*
-	 * WORKS :
-	 */
-	for (int game = 1; game <= 5; game++) {
+	for (int game = 1; game <= 500; game++) {
 	    char winner = playOneGame(stopperBotPlaysFirst, randomBot);
 	    if (winner == 'X')
 		stopperPlayerWins++;
@@ -111,7 +108,7 @@ public class TestStrategies {
     }
 
     @Test
-    public void run1000000TicTacToeGames() {
+    public void run1000TicTacToeGames() {
 	ComputerPlayer randomBot = new ComputerPlayer();
 	randomBot.setStrategy(new RandomAI());
 	ComputerPlayer stopperBotPlaysFirst = new ComputerPlayer();
@@ -123,7 +120,7 @@ public class TestStrategies {
 	int stopperPlayerWins = 0;
 	int ties = 0;
 
-	for (int game = 1; game <= 500000; game++) {
+	for (int game = 1; game <= 500; game++) {
 	    char winner = playOneGame(randomBot, stopperBotPlaysSecond);
 	    if (winner == 'X')
 		randomPlayerWins++;
@@ -133,10 +130,7 @@ public class TestStrategies {
 		ties++;
 	}
 
-	/*
-	 * WORKS :
-	 */
-	for (int game = 1; game <= 500000; game++) {
+	for (int game = 1; game <= 500; game++) {
 	    char winner = playOneGame(stopperBotPlaysFirst, randomBot);
 	    if (winner == 'X')
 		stopperPlayerWins++;
@@ -153,6 +147,50 @@ public class TestStrategies {
 	System.out.println("Stopper wins: " + stopperPlayerWins);
 	System.out.println("Random wins: " + randomPlayerWins);
 	System.out.println("Ties: " + ties);
+	
+	assertEquals(randomPlayerWins, 0);
+    }
+    
+    @Test
+    public void stopperVsStopper() {
+	ComputerPlayer stopperBotPlaysFirst = new ComputerPlayer();
+	ComputerPlayer stopperBotPlaysSecond = new ComputerPlayer();
+	stopperBotPlaysFirst.setStrategy(new StopperAI(1));
+	stopperBotPlaysSecond.setStrategy(new StopperAI(2));
+
+	int randomPlayerWins = 0;
+	int stopperPlayerWins = 0;
+	int ties = 0;
+
+	for (int game = 1; game <= 500; game++) {
+	    char winner = playOneGame(stopperBotPlaysFirst, stopperBotPlaysSecond);
+	    if (winner == 'X')
+		randomPlayerWins++;
+	    if (winner == 'O')
+		stopperPlayerWins++;
+	    if (winner == 'T')
+		ties++;
+	}
+
+	for (int game = 1; game <= 500; game++) {
+	    char winner = playOneGame(stopperBotPlaysFirst, stopperBotPlaysSecond);
+	    if (winner == 'X')
+		stopperPlayerWins++;
+	    if (winner == 'O')
+		randomPlayerWins++;
+	    if (winner == 'T')
+		ties++;
+	}
+
+	System.out.println("StopperAI strategy shoud have more wins than");
+	System.out.println("than RandomAI strategy when they both go first");
+	System.out.println("the same number of times. And ties do happen");
+	System.out.println("===========================================");
+	System.out.println("Stopper wins: " + stopperPlayerWins);
+	System.out.println("Random wins: " + randomPlayerWins);
+	System.out.println("Ties: " + ties);
+	
+	assertEquals(ties, 1000);
     }
 
     private char playOneGame(ComputerPlayer first, ComputerPlayer second) {
@@ -195,141 +233,5 @@ public class TestStrategies {
 		return 'O';
 	    }
 	}
-    }
-
-    @Test
-    public void testStopper() {
-	/*
-	 * "X" is "minimizer" 2nd player
-	 */
-	TicTacToeGame theGame = new TicTacToeGame();
-
-	ComputerPlayer playerWithStopperStrategy = new ComputerPlayer();
-	playerWithStopperStrategy.setStrategy(new StopperAI(2));
-	// X
-	theGame.choose(0, 0);
-	System.out.println(theGame);
-
-	// O
-	theGame.choose(2, 0);
-	System.out.println(theGame);
-
-	// X
-	theGame.choose(0, 1);
-	System.out.println(theGame);
-	System.out.println("========================");
-	
-	Point computerMove = playerWithStopperStrategy.desiredMove(theGame);
-	System.out.println(computerMove.getX() + computerMove.getY());
-
-	System.out.println("Before the move has been made");
-	System.out.println(theGame);
-
-	theGame.choose(computerMove.x, computerMove.y);
-
-	System.out.println("After the move has been made");
-	System.out.println(theGame);
-
-	assertEquals(0, computerMove.x);
-	assertEquals(2, computerMove.y);
-    }
-
-    @Test
-    public void testStopper2() {
-	/*
-	 * "X" is "maximizer"
-	 */
-	TicTacToeGame theGame = new TicTacToeGame();
-
-	ComputerPlayer playerWithStopperStrategy = new ComputerPlayer();
-	playerWithStopperStrategy.setStrategy(new StopperAI());
-	// X
-	theGame.choose(0, 0);
-	System.out.println(theGame);
-
-	// O
-	theGame.choose(2, 0);
-	System.out.println(theGame);
-
-	// X
-	theGame.choose(0, 2);
-	System.out.println(theGame);
-
-	System.out.println("===========================");
-
-	Point computerMove = playerWithStopperStrategy.desiredMove(theGame);
-	theGame.choose(computerMove.x, computerMove.y);
-
-	System.out.println(theGame);
-
-	assertEquals(0, computerMove.x);
-	assertEquals(1, computerMove.y);
-    }
-
-    @Test
-    public void testStopper3() {
-	/*
-	 * "X" is "maximizer"
-	 */
-	TicTacToeGame theGame = new TicTacToeGame();
-	System.out.println(theGame);
-
-	ComputerPlayer playerWithStopperStrategy = new ComputerPlayer();
-	playerWithStopperStrategy.setStrategy(new StopperAI());
-	// X
-	theGame.choose(0, 0);
-	System.out.println(theGame);
-	// O
-	theGame.choose(0, 2);
-	System.out.println(theGame);
-	// X
-	theGame.choose(1, 0);
-	System.out.println(theGame);
-
-	Point computerMove = playerWithStopperStrategy.desiredMove(theGame);
-	System.out.println(theGame);
-	System.out.println("\tDEBUGGING: " + computerMove.x + " " + computerMove.y);
-	System.out.println("\tSHOULD BE: 2 0");
-
-	theGame.choose(computerMove.x, computerMove.y);
-	System.out.println(theGame);
-
-	assertEquals(2, computerMove.x);
-	assertEquals(0, computerMove.y);
-    }
-
-    @Test
-    public void testStopperTakesWin() {
-	/*
-	 * "X" is "minimizer"
-	 */
-	TicTacToeGame theGame = new TicTacToeGame();
-
-	ComputerPlayer playerWithStopperStrategy = new ComputerPlayer();
-	playerWithStopperStrategy.setStrategy(new StopperAI(2));
-	// X
-	theGame.choose(0, 0);
-	
-	// O
-	theGame.choose(2, 0);
-	
-	// X
-	theGame.choose(1, 0);
-	
-	// O
-	theGame.choose(2, 1);
-	
-	// X
-	theGame.choose(0, 2);
-	
-	System.out.println(theGame);
-
-	Point computerMove = playerWithStopperStrategy.desiredMove(theGame);
-	theGame.choose(computerMove.x, computerMove.y);
-	
-	System.out.println(theGame);
-	
-	assertEquals(2, computerMove.x);
-	assertEquals(2, computerMove.y);
     }
 }

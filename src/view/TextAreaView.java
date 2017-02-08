@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -8,20 +7,21 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 
 import controller.OurObserver;
 import model.ComputerPlayer;
 import model.TicTacToeGame;
 
 public class TextAreaView extends JPanel implements OurObserver {
+
+    private static final long serialVersionUID = 1L;
+
     ////
     private JPanel displayPanel;
 
