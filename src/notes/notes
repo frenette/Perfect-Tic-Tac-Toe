@@ -1,0 +1,11 @@
+NOTE : For the purpose of our tests, we still need to explisityly state who is who
+	We are always "X"
+	we always go first
+	x is always the MINIMIZER
+	
+	
+	
+NOTE : 
+	testStopper2 is a rigged game, I will not be able to win.
+	
+	************ testStopper has not removed the point for the move we want to return;

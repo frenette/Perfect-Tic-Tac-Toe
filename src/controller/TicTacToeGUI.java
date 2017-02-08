@@ -13,6 +13,7 @@ import model.RandomAI;
 import model.StopperAI;
 import model.TicTacToeGame;
 import view.ButtonView;
+import view.TextAreaView;
 
 /**
  * Play TicTacToe the computer that can have different AIs to beat you.  Select the Options menus to begin
@@ -41,6 +42,7 @@ public class TicTacToeGUI extends JFrame {
 
   private TicTacToeGame theGame;
   private ButtonView buttonView;
+  private TextAreaView textAreaView;
   private JPanel currentView;
   public static final int width = 300;
   public static final int height = 360;
@@ -53,21 +55,27 @@ public class TicTacToeGUI extends JFrame {
 
     setupMenus();
     initializeGameForTheFirstTime();
-    buttonView = new ButtonView(theGame, width, height);
+    textAreaView = new TextAreaView(theGame, width, height);
+//    buttonView = new ButtonView(theGame, width, height);
     addObservers();
     // Set default view
-    setViewTo(buttonView);
+    setViewTo(textAreaView);
+//    setViewTo(buttonView);
   }
 
   private void addObservers() {
-    theGame.addObserver(buttonView);
+      // TODO
+      theGame.addObserver(textAreaView);
+    //theGame.addObserver(buttonView);
   }
 
   public void initializeGameForTheFirstTime() {
     theGame = new TicTacToeGame();
     // This event driven program will always have
     // a computer player who takes the second turn
-    theGame.setComputerPlayerStrategy(new RandomAI());
+    // TODO
+    theGame.setComputerPlayerStrategy(new StopperAI());
+    //theGame.setComputerPlayerStrategy(new RandomAI());
   }
 
   private void setupMenus() {
