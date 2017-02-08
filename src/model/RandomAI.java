@@ -1,3 +1,11 @@
+/*
+ * Alexander Frenette
+ * Project 3 : Patterns in Tic Tac Toe
+ * csc 335
+ * Due February 8 2017
+ * Description : A random AI that is able to be swapped out at runtime and will select an available position at random
+ */
+
 package model;
 
 import java.awt.Point;

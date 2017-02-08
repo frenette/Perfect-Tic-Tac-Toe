@@ -1,3 +1,13 @@
+/*
+ * Alexander Frenette
+ * Project 3 : Patterns in Tic Tac Toe
+ * csc 335
+ * Due February 8 2017
+ * Description : A stopper AI that is able to be swapped out at runtime and will
+ * select the best possible move as determined by minimax() which recursively creates
+ * a game state tree that we traverse to determine our best move
+ */
+
 package model;
 
 import java.awt.Point;
@@ -234,9 +244,9 @@ public class StopperAI implements TicTacToeStrategy {
 		 * times as there are initial moves for the starting game tree,
 		 * it will not print if it has already found a win)
 		 */
-		if (depth == 0) {
-		    System.out.println("Score for position " + (index + 1) + " = " + currentScore);
-		}
+//		if (depth == 0) {
+//		    System.out.println("Score for position " + (index + 1) + " = " + currentScore);
+//		}
 
 		if (currentScore >= 0) {
 		    if (depth == 0) {

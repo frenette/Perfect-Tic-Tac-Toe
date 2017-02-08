@@ -151,7 +151,8 @@ public class TicTacToeGame extends OurObservable {
     }
 
     /*
-     * Custom methods
+     * tells me if there are moves, or not without having to check all
+     * positions by simply keeping track of moves made 
      */
     public boolean movesAvailable() {
 	if (this.moveNumber == 9) {
@@ -161,6 +162,9 @@ public class TicTacToeGame extends OurObservable {
 	}
     }
 
+    /*
+     * return all available points
+     */
     public ArrayList<Point> getAvailablePositions() {
 	ArrayList<Point> availablePositions = new ArrayList<>();
 
@@ -192,7 +196,6 @@ public class TicTacToeGame extends OurObservable {
 
     /*
      * remove the mark we made because we are traversing back up the game tree,
-     * 
      */
     public void minimaxRemove(int row, int column) {
 	board[row][column] = '_';

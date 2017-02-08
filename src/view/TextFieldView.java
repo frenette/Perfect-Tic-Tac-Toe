@@ -1,3 +1,11 @@
+/*
+ * Alexander Frenette
+ * Project 3 : Patterns in Tic Tac Toe
+ * csc 335
+ * Due February 8 2017
+ * Description : A text area view that is able to be swapped out at runtime and is
+ * informed of all alterations to the board state and will reflect so.
+ */
 package view;
 
 import java.awt.Dimension;
@@ -18,7 +26,7 @@ import controller.OurObserver;
 import model.ComputerPlayer;
 import model.TicTacToeGame;
 
-public class TextAreaView extends JPanel implements OurObserver {
+public class TextFieldView extends JPanel implements OurObserver {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,12 +48,10 @@ public class TextAreaView extends JPanel implements OurObserver {
 
     /////
     private TicTacToeGame theGame;
-    private JButton stateButton = new JButton("Click your move");
-    private JButton[][] buttons = null;
     private ComputerPlayer computerPlayer;
     private int height, width;
 
-    public TextAreaView(TicTacToeGame TicTacToeGame, int width, int height) {
+    public TextFieldView(TicTacToeGame TicTacToeGame, int width, int height) {
 	this.theGame = TicTacToeGame;
 	this.height = height;
 	this.width = width;
@@ -137,9 +143,6 @@ public class TextAreaView extends JPanel implements OurObserver {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    // TODO Auto-generated method stub
-	    System.out.println("I was clicked");
-
 	    if (validInput()) {
 		int row = Integer.parseInt(rowTextField.getText());
 		int col = Integer.parseInt(colTextField.getText());

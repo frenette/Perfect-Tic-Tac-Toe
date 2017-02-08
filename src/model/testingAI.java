@@ -1,3 +1,13 @@
+/*
+ * Alexander Frenette
+ * Project 3 : Patterns in Tic Tac Toe
+ * csc 335
+ * Due February 8 2017
+ * Description : I am testing out the AI for stopper, trying to get all of my
+ * bugs removed from the code, and perform optimizations. I use this as a "copy"
+ * as to not destroy what I already have working during any alterations.
+ */
+
 package model;
 
 import java.awt.Point;
