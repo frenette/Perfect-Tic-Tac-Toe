@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -22,6 +23,7 @@ import model.TicTacToeGame;
 
 public class TextAreaView extends JPanel implements OurObserver {
     ////
+    private JPanel displayPanel;
 
     private JTextField rowTextField;
     private JTextField colTextField;
@@ -33,6 +35,8 @@ public class TextAreaView extends JPanel implements OurObserver {
 
     // TODO
     private JTextArea displayGame;
+
+    private JLabel bottomText = new JLabel("");
 
     /////
     private TicTacToeGame theGame;
@@ -46,20 +50,23 @@ public class TextAreaView extends JPanel implements OurObserver {
 	this.height = height;
 	this.width = width;
 	computerPlayer = theGame.getComputerPlayer();
-	this.add(createDisplay());
+	createDisplay();
+	this.add(displayPanel);
     }
 
-    private JPanel createDisplay() {
-	JPanel returnPanel = new JPanel();
+    private void createDisplay() {
+	displayPanel = new JPanel();
 	JPanel inputPanel = new JPanel();
 	JPanel rowColPanel = new JPanel();
 	JPanel rowPanel = new JPanel();
 	JPanel colPanel = new JPanel();
 
 	this.rowTextField = new JTextField();
-	this.rowTextField.setPreferredSize(new Dimension(20, 30));
+	this.rowTextField.setPreferredSize(new Dimension(45, 45));
+	this.rowTextField.setFont(new Font("Courier", Font.BOLD, 36));
 	this.colTextField = new JTextField();
-	this.colTextField.setPreferredSize(new Dimension(20, 30));
+	this.colTextField.setPreferredSize(new Dimension(45, 45));
+	this.colTextField.setFont(new Font("Courier", Font.BOLD, 36));
 
 	this.rowLabel = new JLabel("Row");
 	this.colLabel = new JLabel("Column");
@@ -71,9 +78,11 @@ public class TextAreaView extends JPanel implements OurObserver {
 	this.displayGame = new JTextArea();
 	this.displayGame.setAlignmentX(CENTER_ALIGNMENT);
 	this.displayGame.setAlignmentY(CENTER_ALIGNMENT);
-	this.displayGame.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
-	this.displayGame.setMinimumSize(new Dimension(300, 300));
+	this.displayGame.setFont(new Font("Courier", Font.BOLD, 36));
+	// this.displayGame.setMinimumSize(new Dimension(300, 300));
 	this.displayGame.setText(this.theGame.toString());
+
+	this.bottomText.setFont(new Font("Courier", Font.BOLD, 36));
 
 	rowPanel.add(rowTextField);
 	rowPanel.add(rowLabel);
@@ -91,19 +100,36 @@ public class TextAreaView extends JPanel implements OurObserver {
 	inputPanel.add(rowColPanel);
 	inputPanel.add(this.moveButton);
 
-	returnPanel.setLayout(new GridLayout(2, 1));
-	returnPanel.add(inputPanel);
-	returnPanel.add(this.displayGame);
-
-	return returnPanel;
+	displayPanel.setLayout(new GridLayout(3, 1));
+	displayPanel.add(inputPanel);
+	displayPanel.add(this.displayGame);
+	displayPanel.add(this.bottomText);
     }
-
-    // private void u
 
     @Override
     public void update() {
 	// TODO Auto-generated method stub
 	this.displayGame.setText(this.theGame.toString());
+	// check to see if the board is full, or is there is a win and disable
+	// the button
+	if (this.theGame.didWin('X')) {
+	    this.moveButton.setText("X wins");
+	    this.moveButton.setEnabled(false);
+
+	    this.bottomText.setText("X wins");
+	} else if (this.theGame.didWin('O')) {
+	    this.moveButton.setText("O wins");
+	    this.moveButton.setEnabled(false);
+	    this.bottomText.setText("O wins");
+	} else if (!theGame.movesAvailable()) {
+	    this.moveButton.setText("Tie");
+	    this.moveButton.setEnabled(false);
+	    this.bottomText.setText("Tie");
+	} else {
+	    this.moveButton.setText("Make the move");
+	    this.moveButton.setEnabled(true);
+	    this.bottomText.setText("");
+	}
 
     }
 
@@ -114,15 +140,51 @@ public class TextAreaView extends JPanel implements OurObserver {
 	    // TODO Auto-generated method stub
 	    System.out.println("I was clicked");
 
-	    // make player's move
-	    System.out.println(rowTextField.getText());
-	    System.out.println(colTextField.getText());
-	    int row = Integer.parseInt(rowTextField.getText());
-	    int col = Integer.parseInt(colTextField.getText());
-	    theGame.choose(row, col);
+	    if (validInput()) {
+		int row = Integer.parseInt(rowTextField.getText());
+		int col = Integer.parseInt(colTextField.getText());
 
-	    Point play = computerPlayer.desiredMove(theGame);
-	    theGame.choose(play.x, play.y);
+		if (theGame.available(row, col)) {
+		    theGame.choose(row, col);
+
+		    Point play = computerPlayer.desiredMove(theGame);
+		    theGame.choose(play.x, play.y);
+		} else {
+		    // alert the player the move is taken
+		    JOptionPane.showMessageDialog(displayPanel, "Invalid move : already occupied");
+		}
+
+	    } else {
+		// not a valid input for a move, alert the player
+		JOptionPane.showMessageDialog(displayPanel, "Inputs must be 0, 1, or 2");
+	    }
+
+	}
+
+	private boolean validInput() {
+	    String rowText = rowTextField.getText();
+	    String colText = colTextField.getText();
+
+	    try {
+
+		int row = Integer.parseInt(rowText);
+		int col = Integer.parseInt(colText);
+
+		// check if row is valid
+		if (row >= 0 && row <= 2) {
+		    // check if col is valid
+		    if (col >= 0 && col <= 2) {
+			return true;
+		    } else {
+			return false;
+		    }
+		} else {
+		    return false;
+		}
+
+	    } catch (Exception e) {
+		return false;
+	    }
 	}
 
     }
